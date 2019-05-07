@@ -40,6 +40,15 @@ var server = http.createServer(function (req, res) {
       case '/scripts/main.js':
         sendFile(res, 'public/scripts/main.js', 'text/javascript')
         break
+      case '/path_index.html':
+        sendFile(res, 'pathing_algorithm/index.html')
+        break
+      case '/styles/path_style.css':
+        sendFile(res, 'pathing_algorithm/styles/style.css', 'text/css')
+        break
+      case '/scripts/path_main.js':
+        sendFile(res, 'pathing_algorithm/scripts/main.js', 'text/javascript')
+        break
       default:
         res.end('404 not found')
     }
