@@ -1,55 +1,82 @@
-var http = require('http')
+let http = require('http')
   , fs = require('fs')
   , url = require('url')
   , sql = require('sqlite3')
   , port = 8080
   , querystring = require('querystring');
 
-var db = new sql.Database('grids.sqlite')
+let db = new sql.Database('grids.sqlite')
 
 const { DATABASE_URL } = process.env;
-var server = http.createServer(function (req, res) {
+let server = http.createServer(function (req, res) {
   if (req.method === 'POST') {
-    var body = '';
+    let body = '';
     req.on('data', chunk => {
       body += chunk.toString();
     });
 
     req.on('end', () => {
-      var jsonData = JSON.parse(body);
-      if (jsonData.requestType === "add") {
-        addGrid(res, jsonData);
-      } else if (jsonData.requestType === "request") {
-        returnNames(res, jsonData);
-      } else if (jsonData.requestType === "grid") {
-        returnGrid(res, jsonData);
+      try {
+        let newData = JSON.parse(body);
+        if (newData.requestType === "add") {
+          addGrid(res, newData);
+        } else if (newData.requestType === "request") {
+          returnNames(res, newData);
+        } else if (newData.requestType === "grid") {
+          returnGrid(res, newData);
+        }
+      } catch (e) {
+        let newData = querystring.parse(body);
+        if (newData.Home == "Home") {
+
+        } else if (newData.Resume = "Resume") {
+
+        } else if (newData.Projects = "Projects") {
+
+        }
       }
     })
   } else {
-    var uri = url.parse(req.url)
+    let uri = url.parse(req.url)
     switch (uri.pathname) {
       case '/':
-        sendFile(res, 'public/index.html')
+        sendHTML(res, 'home/index.html')
         break
-      case '/index.html':
-        sendFile(res, 'public/index.html')
+      case '/home/index.html':
+        sendHTML(res, 'home/index.html')
         break
-      case '/styles/style.css':
-        sendFile(res, 'public/styles/style.css', 'text/css')
+      case '/home/styles/style.css':
+        sendFile(res, 'home/styles/style.css', 'text/css')
         break
-      case '/scripts/main.js':
-        sendFile(res, 'public/scripts/main.js', 'text/javascript')
+      case '/home/scripts/main.js':
+        sendFile(res, 'home/scripts/main.js', 'text/javascript')
         break
-      case '/path_index.html':
-        sendFile(res, 'pathing_algorithm/index.html')
+      case '/resume/index.html':
+        sendHTML(res, 'resume/index.html')
         break
-      case '/styles/path_style.css':
-        sendFile(res, 'pathing_algorithm/styles/style.css', 'text/css')
+      case '/resume/resume.pdf':
+        sendFile(res, 'resume/resume.pdf')
         break
-      case '/scripts/path_main.js':
-        sendFile(res, 'pathing_algorithm/scripts/main.js', 'text/javascript')
+      case '/resume/styles/style.css':
+        sendFile(res, 'resume/styles/style.css', 'text/css')
+        break
+      case '/resume/scripts/main.js':
+        sendFile(res, 'resume/scripts/main.js', 'text/javascript')
+        break
+      case '/path/index.html':
+        sendHTML(res, 'path/index.html')
+        break
+      case '/path/styles/style.css':
+        sendFile(res, 'path/styles/style.css', 'text/css')
+        break
+      case '/path/scripts/main.js':
+        sendFile(res, 'path/scripts/main.js', 'text/javascript')
+        break
+      case '/tab/styles/style.css':
+        sendFile(res, 'tab/styles/style.css', 'text/css')
         break
       default:
+        console.log(uri.pathname)
         res.end('404 not found')
     }
   }
@@ -68,7 +95,18 @@ function sendFile(res, filename, contentType) {
     res.writeHead(200, { 'Content-type': contentType })
     res.end(content, 'utf-8')
   })
+}
 
+function sendHTML(res, filename, contentType) {
+  contentType = contentType || 'text/html';
+
+  fs.readFile(filename, 'utf8', function (error, content) {
+    fs.readFile('tab/index.html', 'utf8', function (error, tabContent) {
+      let withHeader = content.replace("<body>", tabContent)
+      res.writeHead(200, { 'Content-type': contentType })
+      res.end(withHeader)
+    })
+  })
 }
 
 //Finds the smallest number not currently used as an id in the database "db" 
@@ -77,11 +115,11 @@ function findMapKey(callback, username) {
     if (rows === undefined) {
       callback(0);
     } else {
-      var existsFlags = [];
+      let existsFlags = [];
       for (i = 0; i < rows.length; i++) {
         existsFlags[rows[i].id] = 1;
       }
-      var newKey = 0;
+      let newKey = 0;
       while (existsFlags[newKey]) {
         newKey++;
       }
@@ -97,7 +135,7 @@ function addGrid(res, newData) {
     db.all("SELECT grid FROM grids WHERE username = '" + newData.username +
       "' AND gridName = '" + newData.gridName + "'", function (err, rows) {
         if (rows.length > 0) {
-          var sendStruct = {
+          let sendStruct = {
             "valid": false,
             "names": []
           };
@@ -105,8 +143,8 @@ function addGrid(res, newData) {
           res.end(JSON.stringify(sendStruct));
           return;
         }
-        var sqlGrid = JSON.stringify(newData.grid);
-        var gridName = newData.gridName;
+        let sqlGrid = JSON.stringify(newData.grid);
+        let gridName = newData.gridName;
         if (gridName === "" || !gridName) {
           gridName = "grid " + newKey;
         }
@@ -128,7 +166,7 @@ function returnGrid(res, newData) {
 
 function returnNames(res, newData) {
   db.all("SELECT gridName FROM grids WHERE username = '" + newData.username + "'", function (err, rows) {
-    var sendStruct = {
+    let sendStruct = {
       "valid": true,
       "names": rows
     };
