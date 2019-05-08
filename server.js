@@ -42,7 +42,7 @@ let server = http.createServer(function (req, res) {
       case '/':
         sendHTML(res, 'home/index.html')
         break
-      case '/home/index.html':
+      case '/index.html':
         sendHTML(res, 'home/index.html')
         break
       case '/home/styles/style.css':
@@ -51,7 +51,7 @@ let server = http.createServer(function (req, res) {
       case '/home/scripts/main.js':
         sendFile(res, 'home/scripts/main.js', 'text/javascript')
         break
-      case '/resume/index.html':
+      case '/resume-index.html':
         sendHTML(res, 'resume/index.html')
         break
       case '/resume/resume.pdf':
@@ -63,7 +63,7 @@ let server = http.createServer(function (req, res) {
       case '/resume/scripts/main.js':
         sendFile(res, 'resume/scripts/main.js', 'text/javascript')
         break
-      case '/path/index.html':
+      case '/path-index.html':
         sendHTML(res, 'path/index.html')
         break
       case '/path/styles/style.css':
