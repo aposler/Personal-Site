@@ -1,7 +1,5 @@
 /* Style the tab */
 .tab {
-  /*width: 500%;
-  margin-left: -200%;*/
   width: 100%;
   font-size: 0;
   background-color: #f1f1f1;
@@ -23,8 +21,6 @@
   background-color: inherit;
   display: inline;
   margin: 0 auto;
- /* border-style: none solid none solid;
-  border-width: 3px;*/
   border-style: none;
   border-color: darkgray;
   outline: none;
