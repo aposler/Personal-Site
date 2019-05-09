@@ -9,13 +9,40 @@ h1 {
   font-family: "Arial";
   font-size: 60px;
   text-align: center;
+  margin: 0;
+  padding: 20px 0;  
+  color: white;
+}
+
+h2 {
+  font-family: "Arial";
+  font-size: 24px;
+  text-align: center;
+  margin: 0;
+  padding: 20px 0;  
+  color: white;
+}
+
+h3 {
+  font-family: "Arial";
+  font-size: 20px;
+  text-align: center;
+  margin: 0;
+  padding: 20px 0;  
+  color: white;
+}
+
+hr {
+  border-width: 0;
+  height: 2px;
+  background-color: white;
 }
 
 p {
   font-family: "Arial";
   font-size: 16px;  
-  line-height: 2;
   letter-spacing: 1px;
+  text-align: left;
 }
 
 a {
@@ -27,12 +54,12 @@ a {
 
 
 html {
-  background-color: rgb(54, 54, 54);
+  background-color: rgb(87, 87, 87);
   color: white;
 }
 
 body {
- background-color: rgb(54, 54, 54);
+ background-color: rgb(87, 87, 87);
  width: 800px;
  min-height: 100vh;
  margin: 0 auto;
@@ -69,12 +96,6 @@ canvas {
   background: white;
   border: 5px solid black;
   margin-top: 2em;
-}
-
-h1 {
-  margin: 0;
-  padding: 20px 0;  
-  color: white;
 }
 
 input, select, #solve, #restart {
