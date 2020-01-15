@@ -84,6 +84,15 @@ let server = http.createServer(function (req, res) {
       case '/snake/scripts/main.js':
         sendFile(res, 'snake/scripts/main.js', 'text/javascript')
         break
+      case '/420X-index.html':
+        sendHTML(res, '420X/index.html')
+        break
+      case '/420X/styles/style.css':
+        sendFile(res, '420X/styles/style.css', 'text/css')
+        break
+      case '/420X/scripts/main.js':
+        sendFile(res, '420X/scripts/main.js', 'text/javascript')
+        break
       default:
         console.log(uri.pathname)
         res.end('404 not found')
