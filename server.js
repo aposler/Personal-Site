@@ -87,6 +87,9 @@ let server = http.createServer(function (req, res) {
       case '/420X-index.html':
         sendHTML(res, '420X/index.html')
         break
+      case '/420X':
+        sendHTML(res, '420X/index.html')
+        break
       case '/420X/styles/style.css':
         sendFile(res, '420X/styles/style.css', 'text/css')
         break
