@@ -12,6 +12,59 @@
 <body>
     <h1>Alex Osler 420X Website</h1>
     <p>Projects and videos for my CS 420X class will be hosted here</p>
+    <h2>Assignment 2</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/FxmhBBzIIB4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p><b>Code</b></p>
+    <p style="white-space: pre;">void main () {
+      vec2 p = uvN();
+      vec2 mouse2 = mouse.xy / resolution.xy / 2.0;
+      vec3 color = vec3(0.0);
+      vec2 pos = vec2(0.5)-p;
+      float r = length(pos)*4.0;
+      float a = 0.0;
+      float b = 0.0;
+      a += atan(pos.y, pos.x);
+      b += atan(pos.y, pos.x) + time;
+      float frequency = 2.;
+      float gain = 8.;
+      float f = 0.0;
+      float g = 0.0;
+      float colorGain = 1.;
+      color[2] = bands[0]/colorGain;
+      f = abs(cos(a*time*bands[2]));
+      g = abs(cos(b*time*bands[2]));
+      f += cos(a*10.);
+      g += cos(b*10.);
+      f += abs(sin(a*10.));
+      g += abs(sin(b*10.));
+      f += (sin(a*20.));
+      g += (sin(b*20.));
+      f = max(f*(max(bands[0]-bands[1], .1)) * (step(0., bands[0])*10000.), f)/max(1., (step(0.,
+          bands[0])*10000.)) * (max(f*(max(max(bands[0], bands[2]), .1)) * step(0.,
+          bands[2])*10000., f)/max(1., (step(0., bands[2])*10000.)));
+      // g = max(g*(max(bands[0]-bands[1], .1)) * (step(0., bands[0])*10000.), g)/max(1.,
+          (step(0., bands[0])*10000.)) * (max(f*(max(max(bands[0], bands[2]), .1)) *
+          step(0., bands[2])*10000., g)/max(1., (step(0., bands[2])*10000.)));
+      f = f*bands[2];
+      g = g/(mouse2.x*10.);
+      for( float i = 0.; i < 1.; i++ ) { 
+          f += cos(a*(sin(p.y*frequency + time * 1.)*gain)) * (bands[0] + bands[1]); 
+          f += cos(a*(sin(p.x*frequency + time * .5)*gain)); 
+          color += vec3(.5-smoothstep(f, f + 1., r)) * (bands[0] + bands[1]);
+      }
+      float d = length( abs(p)-.3 );
+      color += vec3(fract(D*10.));
+      // color += vec3(1.-smoothstep(g, g+mouse2.y, r));
+      color += vec3(1.-smoothstep(g+1., g+mouse2.y, r));
+      gl_FragColor = vec4(color, 1.0);
+    }
+    </p>
+    <p><b>Artistic Intent Write Up</b></p>
+    <p>In this project, I tried to focus on a relative simplicity, as well as symmetry and repeated aspects. For simplicity, I took this to mean smooth edges, clearly discernible shapes, and relatively slow movement The music additionally supports this, as it is not a terribly complicated song. For symmetry, the center flower itself is symmetrical and is centered to balance the screen. The visuals lose symmetry, however,  as a way to seperate the slow and fast parts of the song. First I start with a very even, symmetrical shape. I then add a horizontally symmetrical overlay, and finally I make the overlay hectic enough to lose symmetry. For the repeated parts, I had the flower go in a nice pattern of white to black and white and finally to black. This was deliberately different, to contrast with the overlay which was the few same effects, repeated multiple times over the animation.
+      For technical aspects, I tied the color strength to the music to create a nice pulsing affect. I also tied the overlays and the size of the far background flower to the music to help with the pulsing. On top of this, I used mouse input to give myself finer control of the spinning flowers size and sharpness as the song went on.
+      </p>
+    <p><b>Feedback Write Up</b></p>
+    <p>My classmate was a definite fan of the animation, with specific compliments towards how the color was tied to the sound, how the live coding added to the animation by giving it a sense of progression, and how the general animation was shaped, with a white “fiery” core. There were some suggestions as well, such as maybe changing the perimeter of the core as well as the size. What really surprised me, however, was that there was no negative comment on how the core changed shape. I changed the shape of the core manually with the mouse position, so I felt it looked quite odd at times, but it seemed to be a nice positive of the animation. Additionally, I noted how he suggested changing the perimeter of the core, because I actually do that, but it is very subtle. I was worried it wouldn’t be very noticeable in the final version, and it seems I was unfortunately right. Additionally, his comment on the core being “fiery” was interesting to me, because I consider it to be a flower shape. I can easily see how it can come across as fiery, but I didn’t think of that interpretation so it was a cool thing to notice.</p>
     <br>
     <br>
     <script src="home/scripts/main.js"></script>
