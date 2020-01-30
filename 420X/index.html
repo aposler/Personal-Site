@@ -67,6 +67,131 @@
     <p>My classmate was a definite fan of the animation, with specific compliments towards how the color was tied to the sound, how the live coding added to the animation by giving it a sense of progression, and how the general animation was shaped, with a white “fiery” core. There were some suggestions as well, such as maybe changing the perimeter of the core as well as the size. What really surprised me, however, was that there was no negative comment on how the core changed shape. I changed the shape of the core manually with the mouse position, so I felt it looked quite odd at times, but it seemed to be a nice positive of the animation. Additionally, I noted how he suggested changing the perimeter of the core, because I actually do that, but it is very subtle. I was worried it wouldn’t be very noticeable in the final version, and it seems I was unfortunately right. Additionally, his comment on the core being “fiery” was interesting to me, because I consider it to be a flower shape. I can easily see how it can come across as fiery, but I didn’t think of that interpretation so it was a cool thing to notice.</p>
     <br>
     <br>
+    <h2>Assignment 3</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Z2G8xgFvFLU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p><b>Code</b></p>
+    <p style="white-space: pre;">
+      #ifdef GL_ES
+      precision mediump float;
+      #endif
+      
+      uniform float time;
+      uniform vec2 resolution;
+      
+      uniform sampler2D uSampler;
+      
+      vec4 blur5(sampler2D image, vec2 uv, vec2 res, vec2 direction) {
+        vec4 color = vec4(0.0);
+        vec2 off1 = vec2(1.3333333333333333) * direction;
+        color += texture2D(image, uv) * 0.29411764705882354;
+        color += texture2D(image, uv + (off1 / res)) * 0.35294117647058826;
+        color += texture2D(image, uv - (off1 / res)) * 0.35294117647058826;
+        return color; 
+      }
+  
+      vec4 display5(sampler2D image, vec2 uv, vec2 res, vec2 direction) {
+        vec4 color = vec4(0.0);
+        color += texture2D(image, uv);
+        return color; 
+      }
+      
+      void main() {
+        vec2 p = vec2(gl_FragCoord.x, gl_FragCoord.y);
+        vec2 pos = gl_FragCoord.xy / resolution;
+        float frequency = 1.;
+        float gain = 10.;
+        float thickness = .1;
+        float contrast = .45;
+        
+        //Sine/Square Wave Oscillator
+        vec4 camColor = display5( uSampler, pos, resolution, vec2(2.) );
+        vec4 color = camColor;
+  
+        float camR = camColor[0];
+        float camG = camColor[1];
+        float camB = camColor[2];
+        float camAlpha = camColor[3];
+  
+        float stepFreqX = camR;
+        float modX = camG;
+        float stepFreqY = camB;
+        float modY = camAlpha;
+        float lowerEnd = 0.;
+        float mainX = p.x;
+        float mainY = p.y;
+        float nonColorMin = .3;
+        
+        //Chroma Keying
+        if(camR > .5 && camG < nonColorMin && camB < nonColorMin){
+          mainY = p.y/p.x;
+        }
+  
+        if(camG > .3 && camR < nonColorMin && camB < .45){
+          modY = 0.;
+        } else if(camB > .4 && camR < .5 ){
+          mainX = p.x/p.y;
+          mainY = p.y/p.x;
+        }
+  
+        for( float i = 0.; i < 1.; i++ ) { 
+          float colorX = sin( mainX * frequency  + time ) / thickness;
+          float squareColorX = smoothstep(lowerEnd, stepFreqX, mod(colorX, modY)) * contrast;
+          color += squareColorX;
+  
+  
+          float colorY = sin( mainY * frequency  + time ) / thickness;
+          float squareColorY = smoothstep(lowerEnd, stepFreqY, mod(colorY, modY)) * contrast;
+          color += squareColorY;
+        }
+  
+        //Brightness
+        color = color * .9;
+        
+        //Luma Inversion
+        //if((mod(time, 6000.)) > 2473.){
+        //  color = 1.-color;
+        //}
+  
+        //RGB Controls
+        float r = color[0];
+        float g = color[1];
+        float b = color[2];
+        float alpha = 1.;
+  
+        //Luma Keying
+        float lumaVal = .9;
+        if(r >= lumaVal && g >= lumaVal && b >= lumaVal){
+          r = 0.;
+          g = 0.;
+          b = 0.;
+          alpha = 1.;
+        }
+  
+        gl_FragColor = vec4( r,g,b, alpha );
+      }
+    </p>
+    <p><b>Artistic Intent Write Up</b></p>
+    <p>In this project, I was really interested in exploring what I could do with the square wave oscillator, so that was my starting point. One I had a square wave oscillator, I brought in some of the other functions you recommended implementing, and created a fairly interesting animation of square lines almost hecticly moving around the screen. I felt it was a little bit too unchanging throughout it’s runtime though, so to add some diversity, and I added in video input. From there I began experimenting with different object, and I ended up choosing playing cards because I thought I could match them up with the song, and I thought they could add a nice sense of progression. To that end I picked a particularly slow song so I could really emphasize its growth over the piece. Since I had multiple colors of playing cards, I chroma keyed the blue ones, red ones, and green ones differently to add some extra variety, while the black ones were caught up in the luma key to add another interesting affect. Finally, while filming a test I realised the lights from my keyboard created a nice wave in the back, so I began using that as well to great effect. You can look at my Vidiot to see some of the square wave oscillations I was experimenting with. While I never actually ended up using those, in between I ended up with a similar effect to mine that I ended up using.</p>
+    <p><b>Feedback Intent Write Up</b></p>
+    <p>This was definitely a different response that I was expecting, but in hindsight that doesn’t really surprise me. The biggest thing that I didn’t expect was that the video input would be unidentifiable. I thought a lot of it would be confusing, but I figured at least the playing cards shapes would be distinct enough to make it clear. Looking back though, I think the only reason I could tell what was going on was because I already new, which obviously made it much easier to understand the video input. Additionally, I didn’t think the covering square wave effect would be that interesting, but it seemed to be the most interesting part of the piece. I think I didn’t see that because it was the first thing I implemented, so after looking at it for hours it kinda lost its effect on me. He did seem to like the animation, however, which was nice to see, and he was specifically a big fan of the effect that the keyboard lights added.</p>
+    
+    <p><b>Vidiot Stuff</b></p>
+    <div style="width:100%;height:480px;background-color:black;text-align:center;">
+      <video style="height:100%;" controls>
+        <source src="https://lh3.googleusercontent.com/g6O-Hvu4JpJ1PjvELzQH49nHnf1W-m539Z6RZXrlnFb0PN6t8k-CsouqFZKqIg5h54ktcgVgnZF0kxDmwkchrVsmgGTmuVCFDfl5o1VmC9R4UgDscHemKKdlKGHPBse7aBWM9HT70Q=m18" type="video/mp4">
+      </video>
+    </div>
+    <div style="width:100%;height:480px;background-color:black;text-align:center;">
+      <video style="height:100%;" controls>
+        <source src="https://lh3.googleusercontent.com/iu80XCujQhimaiCVJB58dLoaNN0QL9MDe6-JjuHu4Ovpzfxw12EWST6v9Ie-dYGbbWX_pX1A9PW-0czX6T_142lvsUPmjVSf93UeJ4aXm2Q8bZNhOcelVwo9rna3Quq_H52BTaE1mA=m18" type="video/mp4">
+      </video>
+    </div>
+    <div style="width:100%;height:480px;background-color:black;text-align:center;">
+      <video style="height:100%;" controls>
+        <source src="https://lh3.googleusercontent.com/NJFrHSh0g33oaU7CfFg1PkeMG1LFQJ5siip3OuNJu25MvH5J-rlGdDqAvJnwVjmQy-x8R3nXGDhVLBG7-Nz6PhiPyljzuGHaDEUQA0jxAxnJJKUHbal_hiG6Cu0giW4AJyw-15tSnQ=m18" type="video/mp4">
+      </video>
+    </div>
+    
+    
     <script src="home/scripts/main.js"></script>
 </body>
 
