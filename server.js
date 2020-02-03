@@ -1,14 +1,20 @@
-let http = require('http')
+let https = require('https')
   , fs = require('fs')
   , url = require('url')
   , sql = require('sqlite3')
   , port = 8080
-  , querystring = require('querystring');
+  , querystring = require('querystring')
+  , tls = require('tls');
 
 let db = new sql.Database('grids.sqlite')
 
+const options = {
+  key: fs.readFileSync('client-key.pem'),
+  cert: fs.readFileSync('client-cert.pem')
+};
+
 const { DATABASE_URL } = process.env;
-let server = http.createServer(function (req, res) {
+let server = https.createServer(options, function (req, res) {
   if (req.method === 'POST') {
     let body = '';
     req.on('data', chunk => {
