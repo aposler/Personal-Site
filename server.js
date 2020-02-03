@@ -38,6 +38,7 @@ let server = http.createServer(function (req, res) {
     })
   } else {
     let uri = url.parse(req.url)
+    console.log(uri.pathname)
     switch (uri.pathname) {
       case '/':
         sendHTML(res, 'home/index.html')
@@ -95,6 +96,15 @@ let server = http.createServer(function (req, res) {
         break
       case '/420X/scripts/main.js':
         sendFile(res, '420X/scripts/main.js', 'text/javascript')
+        break
+      case '/420X-mini':
+        sendHTML(res, '420X/mini/index.html')
+        break
+      case '/420X-mini/styles/style.css':
+        sendFile(res, '420X/mini/styles/style.css', 'text/css')
+        break
+      case '/420X-mini/scripts/main.js':
+        sendFile(res, '420X/mini/scripts/main.js', 'text/javascript')
         break
       default:
         console.log(uri.pathname)
