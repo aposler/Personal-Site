@@ -118,6 +118,18 @@ let server = http.createServer(function (req, res) {
       case '/420X-mini2/scripts/dat.gui.js':
         sendFile(res, '420X/mini2/scripts/dat.gui.js', 'text/javascript')
         console.log('sentFile')
+      case '/420X-mini3':
+        sendHTML(res, '420X/mini3/index.html')
+        break
+      case '/420X-mini3/styles/style.css':
+        sendFile(res, '420X/mini3/styles/style.css', 'text/css')
+        break
+      case '/420X-mini3/scripts/main.js':
+        sendFile(res, '420X/mini3/scripts/main.js', 'text/javascript')
+        break
+      case '/420X-mini3/scripts/dat.gui.js':
+        sendFile(res, '420X/mini3/scripts/dat.gui.js', 'text/javascript')
+        console.log('sentFile')
       default:
         console.log(uri.pathname)
         res.end('404 not found')
