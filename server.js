@@ -97,15 +97,27 @@ let server = http.createServer(function (req, res) {
       case '/420X/scripts/main.js':
         sendFile(res, '420X/scripts/main.js', 'text/javascript')
         break
-      case '/420X-mini':
-        sendHTML(res, '420X/mini/index.html')
+      case '/420X-mini1':
+        sendHTML(res, '420X/mini1/index.html')
         break
-      case '/420X-mini/styles/style.css':
-        sendFile(res, '420X/mini/styles/style.css', 'text/css')
+      case '/420X-mini1/styles/style.css':
+        sendFile(res, '420X/mini1/styles/style.css', 'text/css')
         break
-      case '/420X-mini/scripts/main.js':
-        sendFile(res, '420X/mini/scripts/main.js', 'text/javascript')
+      case '/420X-mini1/scripts/main.js':
+        sendFile(res, '420X/mini1/scripts/main.js', 'text/javascript')
         break
+      case '/420X-mini2':
+        sendHTML(res, '420X/mini2/index.html')
+        break
+      case '/420X-mini2/styles/style.css':
+        sendFile(res, '420X/mini2/styles/style.css', 'text/css')
+        break
+      case '/420X-mini2/scripts/main.js':
+        sendFile(res, '420X/mini2/scripts/main.js', 'text/javascript')
+        break
+      case '/420X-mini2/scripts/dat.gui.js':
+        sendFile(res, '420X/mini2/scripts/dat.gui.js', 'text/javascript')
+        console.log('sentFile')
       default:
         console.log(uri.pathname)
         res.end('404 not found')
@@ -125,6 +137,9 @@ function sendFile(res, filename, contentType) {
   fs.readFile(filename, function (error, content) {
     res.writeHead(200, { 'Content-type': contentType })
     res.end(content, 'utf-8')
+    if(filename === '420X/mini2/scripts/dat.gui.js'){
+      console.log('test');
+    }
   })
 }
 
