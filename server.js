@@ -146,6 +146,24 @@ let server = http.createServer(function (req, res) {
       case '/420X-assignment4/bundle.js':
         sendFile(res, '420X/assignment4/bundle.js', 'text/javascript')
         break;
+        case '/420X-assignment5':
+        sendHTML(res, '420X/assignment5/index.html')
+        break
+      case '/420X-assignment5/styles/style.css':
+        sendFile(res, '420X/assignment5/styles/style.css', 'text/css')
+        break
+      case '/420X-assignment5/scripts/main.js':
+        sendFile(res, '420X/assignment5/scripts/main.js', 'text/javascript')
+        break
+      case '/420X-assignment5/dat.gui.js':
+        sendFile(res, '420X/assignment5/dat.gui.js', 'text/javascript')
+        break;
+      case '/420X-assignment5/dat.gui.js.map':
+        sendFile(res, '420X/assignment5/dat.gui.js.map', 'text/javascript')
+        break;
+      case '/420X-assignment5/bundle.js':
+        sendFile(res, '420X/assignment5/bundle.js', 'text/javascript')
+        break;
       default:
         console.log(uri.pathname, '404')
         res.end('404 not found')

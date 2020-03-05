@@ -12,6 +12,21 @@
 <body>
     <h1>Alex Osler 420X Website</h1>
     <p>Projects and videos for my CS 420X class will be hosted here</p>
+    <h2>Assignment 5</h2>
+    <a href="http://www.alexosler.com/420X-assignment5">Visit it live without phone interaction here</a>
+    <br>
+    <a href="https://github.com/aposler/CS420X-assignment5">Visit the GitHub here</a>
+    <br>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/N3a_OfSrKWU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+    <p><b>Artistic Intent Write Up</b></p>
+    <p>I came into this looking to create a flocking simulation, and have it be affected by the gyro values of a phone to influence how the boid fly around. I obviously first began by implementing the flocking simulation, which initially didn’t involve a significant amount of customization. Once that was implemented, I set about trying to get the phones gyro values to effectively show in the simulation. I tried a few implementations, but I settled on picking a location of screen and “seek”ing to that location. This took a few more attempts and tweaks to get right, but eventually I created the cool effect I was looking for of a global movement in one direction, with some variation between the boids. To continue with the phone integration, I decided to have an option to touch the phone and bring the boids to that location. With some tweaking this became interesting, as the boids would flow around the location without simply stopping on it. From there, I moved onto color work. After some failed rgb experiments, I moved to using values from the vertex shader to influence the colors. The first idea I had was changing the boids as they bunched up. After a few experiments, I settled on changing the alpha, as it made the boids “pop” when they bunched up. I then decided to go for a red-green scale for the velocity, because it seemed fitting for movement given the common connotations. Finally, I made the blue value the direction the boid was facing. This made the whole simulation look very dynamic, and provided some very nice immediate feedback which made both previous interactions much more interesting. Finally, I added the GUI in for some additional customization. I don’t believe the GUI is key to the design goals of the project, but in my opinion more customization is always better, so I added as many customizable variables into it as I could.</p>
+    <p><b>Feedback Write Up</b></p>
+    <p>I looked for feedback at a few points overall to check if I was on the right track and too see if the version needed work. I first had a conversation with my roommates after first implementing flocking. This went quite well, and there wasn’t anything particularly negative. This was likely due to the simplicity of the project, but it did provide some nice reassurance. I next got some feedback during the implementation of phone interaction, because I wasn’t a big fan of how the gyro mechanics were working. Like I expected, my roommates thought the current (at the time) effect was a bit unimpressive. This was partially my catalyst for changing the gyro mechanics off of changing the velocity, as both me and my roommates agreed. The final round of feedback I got was once all the interaction was finalized, but I was working on the color values. Before coming up with the idea of changing the colors based on the boids values, I attempted to create a general rgb effect that would slowly shift. Once I had implemented it, I thought I was fully done with the project, so I asked for comments from my roommates again. This did not go as well as I hoped, as the rgb effect did not work for my roommates. There were a few jarring cuts in colors that I personally thought was fine which they were strongly not a fan of. Additionally, the way it shifted didn’t really let the colors pop in their opinion, so it wasn’t actually very interesting. Rather than showing a bright yellow, they felt the colors were more like a dull brown, which as you can expect wasn’t enticing. From this, I totally changed my color strategy, resulting in the current version. I have not gotten comments on the final version of the project, but I am happy with the result.</p>
+    <p><b>Process Write Up</b></p>
+    <p>I first began with looking into flocking, slime mold, and smoothlife. After a failed start at smoothlife, I decided on flocking, and set about implementing it. The first implementation issue was passing multiple arrays to the vertex shader, as I wrongly believed I needed 6 values. This took me very long due to not having/understanding the documentation and a slew of issues with the order I had placed functions in. Once I had finally figured this out, I went into implementing multiple transform feedback outputs. This, again, proved to be very frustrating for similar reasons. Once I had finally decoded the documentation and fixed the binding issues, I had all the pieces together for boids. This implementation was actually rather painless, comparatively. I used the clear Nature of Codes tutorial, which caused a few issues with functions that didn’t exist in webgl but the PVector source code made implementing them simple. After dealing with wraparound distance calculations and the location formats (resolution vs -1,1), I had flocking implemented. When I went to increase the number of boids, however, I realised that it couldn’t go any higher than 512. With a bit of help from Prof. Roberts I realised it was caused by the fact that webgl limits float32 arrays to 2048 values. To solve this, I changed both my arrays to 2 values, doubling the particleCount. From there, I moved onto the phone interaction. Getting the values was rather easy, and once they were in I went to make them move the boids. I first used them to get a location on the screen. This looked ok, but it was just selecting a point on the screen, which could be done through touch interaction. I then tried directly influencing the velocity values with the gyro. This was fairly uninteresting as it affected every single boid the same way and they all simply shifted in one direction, which is not what I was going for. This led me back to my first idea. To fix it I adjusted the calculation so it would “seek” to a point that was outside the screen, which worked. From there I quickly implemented the touch idea. Finally, I moved onto the color implementation that I mentioned in the artistic section. This part and the GUI were simply busy work, so besides taking awhile there is not much interesting to say. In some additional busy work, I moved to 4 arrays to re-double my particle count. For some reason(probably my implementation), this did not increase the number of boids, making it a wasted effort. I am unsure how much work this appears to an outside observer, but I can assure you all of these steps were very time consuming, and this took well over 30 hours.</p>
+    <br>
+    <br>
+
     <h2>Assignment 4</h2>
     <a href="http://www.alexosler.com/420X-assignment4">Visit it live here</a>
     <br>
@@ -32,14 +47,17 @@
     <a href="https://alex-osler.herokuapp.com/420X-mini3">Visit the Reaction Diffusion assignment here</a>
     <br>
     <br>
+
     <h2>Mini Assignment 2, Game Of Life</h2>
     <p>Couldn't get the tutorial working, so no Mini Assignment 2 sorry</p>
     <br>
     <br>
+
     <h2>Mini Assignment 1, Feedback</h2>
     <a href="https://alex-osler.herokuapp.com/420X-mini1">Visit the Feedback assignment here</a>
     <br>
     <br>
+
     <h2>Assignment 3</h2>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/Z2G8xgFvFLU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <p><b>Code</b></p>
